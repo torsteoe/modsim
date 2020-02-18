@@ -21,7 +21,7 @@ ddq = [ddpm1;ddpm2];
 z = sym('z');
 
 % Generalized forces
-Q = [];
+Q = [u; 0; 0];
 % Kinetic energy (function of q and dq)
 T = ;
 % Potential energy
