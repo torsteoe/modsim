@@ -1,7 +1,8 @@
-function [state_dot] = dynamics(~, state, epsilon)
+function [state_dot] = dynamics(~, state, params)
 %DYNAMICS Summary of this function goes here
 %   Detailed explanation goes here
-alpha = 10^-3;
+alpha = params(2);
+epsilon = params(1);
 x =  [state(1);state(2)];
 z = [state(3); state(4)];
 

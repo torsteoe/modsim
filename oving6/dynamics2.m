@@ -1,7 +1,7 @@
-function [x_dot] = dynamics2(~, state)
+function [x_dot] = dynamics2(~, state, params)
 %DYNAMICS Summary of this function goes here
 %   Detailed explanation goes here
-alpha = 10^-3;
+alpha = params(2);
 x =  [state(1);state(2)];
 
 
@@ -11,7 +11,7 @@ A1 = [1 1;
 A = [x(1)^2 x(2);
     0   x(2)^2] + alpha*eye(2);
 
-x_dot = -A1*x-(1/10)*A\x;
+x_dot = -A1*x-(1/10)*(A\x);
 
 
 end
