@@ -98,35 +98,23 @@ grid on
 ylabel('Velocity [m/s]')
 xlabel('Time [s]')
 
+figure(2)
+
+
+
 subplot(4,1,4)
 plot(dts,X_ns_4(:)')
 grid on
 ylabel('Velocity [m/s]')
 xlabel('Time [s]')
-figure(2)
 
-dt = 0.4
-lambda = -7
-
-T = 0:dt:final_time;
-    steps = size(T, 2);
-    dts(i) = dt;
-    
-f = @(t, x) lambda*x;
-
-    X_RK1 =  ERKTemplate(HeunArray_1,f,T,x0, dt);
-    X_RK2 =  ERKTemplate(HeunArray_2,f,T,x0, dt);
-    X_RK3 =  ERKTemplate(HeunArray_3,f,T,x0, dt);
-    X_RK4 =  ERKTemplate(HeunArray_4,f,T,x0, dt);
-% 
-% plot(T,X_RK1(:)')
-% hold on
-% plot(T,X_RK2(:)')
-% hold on;
-% plot(T,X_RK3(:)')
-% hold on;
+plot(T,X_RK1(:)')
+hold on
+plot(T,X_RK2(:)')
+hold on;
+plot(T,X_RK3(:)')
+hold 
 plot(T,X_RK4(:)')
-legend('rk3','rk4')
 
 
 
