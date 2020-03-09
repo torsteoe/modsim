@@ -28,7 +28,7 @@ function X = NewtonsMethodTemplate(f, J, x0, tol, N)
     while iterate
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Calculate and save next iteration value x
-        %
+        xn = xn -J(x)\f(x);
         %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         fn = f(xn); % save calculation for next iteration
