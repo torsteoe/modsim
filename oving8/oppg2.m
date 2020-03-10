@@ -4,7 +4,7 @@ close all;
 clear;
 clc;
 
-lambda = -2;
+lambda = -2000;
 x0 = 1;
 f = @(t, x) lambda*x;
 syms x t;
