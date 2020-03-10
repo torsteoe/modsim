@@ -1,0 +1,282 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>oppg1</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-03-10"><meta name="DC.source" content="oppg1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">1a)</a></li><li><a href="#2">1b</a></li><li><a href="#3">1c)</a></li><li><a href="#4">1d</a></li></ul></div><h2 id="1">1a)</h2><pre class="codeinput">close <span class="string">all</span>;
+clear;
+clc;
+x0 = -1;
+y0 = -1;
+
+initial_value = [x0;y0];
+syms <span class="string">x</span> <span class="string">y</span>;
+
+jac_a(x,y) = jacobian(func1(x,y), [x y]);
+sol = NewtonsMethodTemplate(@func1, jac_a, initial_value, 1e-7);
+
+iterations = 1:size(sol, 2);
+iters = size(sol,2);
+vals = zeros(size(initial_value, 1), iters);
+<span class="keyword">for</span> k = 1:iters
+    cell = num2cell(sol(:,k));
+    value = func1(cell{:});
+    vals(:,k) = norm(value, Inf);
+<span class="keyword">end</span>
+subplot(211)
+plot(iterations, sol);
+subplot(212)
+semilogy(iterations, vals);
+</pre><img vspace="5" hspace="5" src="oppg1_01.png" alt=""> <h2 id="2">1b</h2><pre class="codeinput">close <span class="string">all</span>;
+clear;
+clc;
+
+
+func_b = @(x) (x-1)*(x-2)*(x-3)+1;
+syms <span class="string">x</span>;
+jac_b(x) = jacobian(func_b(x), x);
+disp(simplify(jac_b));
+x0 = 3;
+sol = NewtonsMethodTemplate(func_b, simplify(jac_b), x0, 1e-4, 100);
+
+iterations = 1:size(sol, 2);
+iters = size(sol,2);
+vals = zeros(size(x0, 1), iters);
+<span class="keyword">for</span> k = 1:iters
+     value = func_b(sol(:, k));
+    vals(:,k) = norm(value, Inf);
+<span class="keyword">end</span>
+subplot(211)
+plot(iterations, sol);
+subplot(212)
+semilogy(iterations, vals);
+</pre><pre class="codeoutput">3*x^2 - 12*x + 11
+symbolic function inputs: x
+ 
+</pre><img vspace="5" hspace="5" src="oppg1_02.png" alt=""> <h2 id="3">1c)</h2><pre class="codeinput">close <span class="string">all</span>;
+clear;
+clc;
+func_c = @(x, y) [x-1 + (cos(y)*x+1)*cos(y);
+                    -x*sin(y)*(cos(y)*x+1)];
+syms <span class="string">x1</span> <span class="string">x2</span>;
+jac_c(x1, x2) = jacobian(func_c(x1, x2), [x1, x2]);
+disp(simplify(jac_c));
+x0 = [1; 3];
+sol = NewtonsMethodTemplate(func_c, simplify(jac_c), x0, 1e-4, 50);
+
+iterations = 1:size(sol, 2);
+iters = size(sol,2);
+vals = zeros(size(x0, 1), iters);
+<span class="keyword">for</span> k = 1:iters
+    cell = num2cell(sol(:, k));
+     value = func_c(cell{:});
+    vals(:,k) = norm(value, Inf);
+<span class="keyword">end</span>
+subplot(211)
+plot(iterations, sol);
+subplot(212)
+semilogy(iterations, vals);
+</pre><pre class="codeoutput">[               cos(x2)^2 + 1,         -sin(x2)*(2*x1*cos(x2) + 1)]
+[ -sin(x2)*(2*x1*cos(x2) + 1), -x1*(cos(x2) - x1 + 2*x1*cos(x2)^2)]
+symbolic function inputs: x1, x2
+ 
+</pre><img vspace="5" hspace="5" src="oppg1_03.png" alt=""> <h2 id="4">1d</h2><pre class="codeinput">close <span class="string">all</span>;
+clear;
+clc;
+func_d = @(x) 100*(x(2)-x(1))^2+(x(1)-1)^4;
+syms <span class="string">x1</span> <span class="string">x2</span>;
+grad_d(x1,x2) = jacobian(func_d([x1;x2]), [x1, x2])';
+
+jac_grad_d(x1, x2) = jacobian(grad_d(x1,x2), [x1, x2]);
+
+x0 = [10;10];
+sol = NewtonsMethodTemplate(grad_d, simplify(jac_grad_d), x0, 1e-4, 100);
+
+iterations = 1:size(sol, 2);
+iters = size(sol,2);
+vals = zeros(size(x0, 1), iters);
+<span class="keyword">for</span> k = 1:iters
+    cell = num2cell(sol(:,k));
+     value = grad_d(cell{:});
+    vals(:,k) = norm(value, Inf);
+<span class="keyword">end</span>
+subplot(211)
+plot(iterations, sol(1,:));
+hold <span class="string">on</span>;
+plot(iterations, sol(2,:));
+
+subplot(212)
+semilogy(iterations, vals);
+</pre><img vspace="5" hspace="5" src="oppg1_04.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% 1a)
+close all;
+clear;
+clc;
+x0 = -1;
+y0 = -1;
+
+initial_value = [x0;y0];
+syms x y;
+
+jac_a(x,y) = jacobian(func1(x,y), [x y]);
+sol = NewtonsMethodTemplate(@func1, jac_a, initial_value, 1e-7); 
+
+iterations = 1:size(sol, 2);
+iters = size(sol,2);
+vals = zeros(size(initial_value, 1), iters);
+for k = 1:iters
+    cell = num2cell(sol(:,k));
+    value = func1(cell{:});
+    vals(:,k) = norm(value, Inf);
+end
+subplot(211)
+plot(iterations, sol);
+subplot(212)
+semilogy(iterations, vals);
+
+%% 1b
+close all;
+clear;
+clc;
+
+
+func_b = @(x) (x-1)*(x-2)*(x-3)+1;
+syms x;
+jac_b(x) = jacobian(func_b(x), x);
+disp(simplify(jac_b));
+x0 = 3;
+sol = NewtonsMethodTemplate(func_b, simplify(jac_b), x0, 1e-4, 100); 
+
+iterations = 1:size(sol, 2);
+iters = size(sol,2);
+vals = zeros(size(x0, 1), iters);
+for k = 1:iters
+     value = func_b(sol(:, k));
+    vals(:,k) = norm(value, Inf);
+end
+subplot(211)
+plot(iterations, sol);
+subplot(212)
+semilogy(iterations, vals);
+
+%% 1c)
+close all;
+clear;
+clc;
+func_c = @(x, y) [x-1 + (cos(y)*x+1)*cos(y);
+                    -x*sin(y)*(cos(y)*x+1)];
+syms x1 x2;
+jac_c(x1, x2) = jacobian(func_c(x1, x2), [x1, x2]);
+disp(simplify(jac_c));
+x0 = [1; 3];
+sol = NewtonsMethodTemplate(func_c, simplify(jac_c), x0, 1e-4, 50); 
+
+iterations = 1:size(sol, 2);
+iters = size(sol,2);
+vals = zeros(size(x0, 1), iters);
+for k = 1:iters
+    cell = num2cell(sol(:, k));
+     value = func_c(cell{:});
+    vals(:,k) = norm(value, Inf);
+end
+subplot(211)
+plot(iterations, sol);
+subplot(212)
+semilogy(iterations, vals);
+
+%% 1d
+close all;
+clear;
+clc;
+func_d = @(x) 100*(x(2)-x(1))^2+(x(1)-1)^4;
+syms x1 x2;
+grad_d(x1,x2) = jacobian(func_d([x1;x2]), [x1, x2])';
+
+jac_grad_d(x1, x2) = jacobian(grad_d(x1,x2), [x1, x2]);
+
+x0 = [10;10];
+sol = NewtonsMethodTemplate(grad_d, simplify(jac_grad_d), x0, 1e-4, 100); 
+
+iterations = 1:size(sol, 2);
+iters = size(sol,2);
+vals = zeros(size(x0, 1), iters);
+for k = 1:iters
+    cell = num2cell(sol(:,k));
+     value = grad_d(cell{:});
+    vals(:,k) = norm(value, Inf);
+end
+subplot(211)
+plot(iterations, sol(1,:));
+hold on;
+plot(iterations, sol(2,:));
+
+subplot(212)
+semilogy(iterations, vals);
+
+##### SOURCE END #####
+--></body></html>
