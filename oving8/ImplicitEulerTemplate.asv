@@ -17,7 +17,7 @@ function x = ImplicitEulerTemplate(f, dfdx, T, x0)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     xt = x0; % initial iteration
     % Loop over time points
-    dt = T(2)-T(1);
+    dt = T(2)
     x(1) = xt;
     for nt=2:Nt
         

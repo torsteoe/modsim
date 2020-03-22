@@ -22,7 +22,9 @@ function X = NewtonsMethodTemplate(f, jac, x0, tol, N)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     xn = x0; % initial estimate
     n = 1; % iteration number
-    fn = f(xn); % save calculation   
+    cell = num2cell(xn);
+    
+    fn = f(cell{:}); % save calculation   
     
     
     
@@ -33,11 +35,13 @@ function X = NewtonsMethodTemplate(f, jac, x0, tol, N)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Calculate and save next iteration value x
         X(:,n) = xn;
-
-        xn = xn -inv(jac(xn))*f(xn).';
+        cell = num2cell(xn);
+        xn = xn -vpa(jac(cell{:}))\fn;
         %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        fn = f(xn); % save calculation for next iteration
+        cell = num2cell(xn);
+    
+        fn = f(cell{:}); % save calculation for next iteration
         % Continue iterating?
         iterate = norm(fn,Inf) > tol && n <= N;
         n = n+1;
