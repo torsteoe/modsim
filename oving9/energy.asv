@@ -1,0 +1,8 @@
+function [E] = energy(x)
+%ENERGY Summary of this function goes here
+%   Detailed explanation goes here
+E = zeros(size(x,1), size(x,2));
+E = ((m*g)/(k-1)*x_d^k/x(1:)^(k-1)+m*g*x0(1)+1/2*m*x0(2))*10^-3;
+
+end
+

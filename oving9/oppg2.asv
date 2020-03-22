@@ -1,0 +1,105 @@
+close all;
+clear;
+clc;
+%% Explicit Euler trajectory: test function
+
+lambda = -2;
+f = @(t, x) lambda*x;
+T = 0:0.1:2;
+x0 = 1;
+f_test = figure();
+x = explicit_euler(f, T, x0);
+plot(T, x);
+title('Test function, lambda*x');
+
+%% Explicit Euler, pneumatic spring:
+dt = 0.01;
+tf = 10;
+T = 0:dt:tf;
+x0 = [2;0];
+x_d = 1.32;
+k = 2.40;
+g = 9.81;
+m = 200;
+
+x = explicit_euler(@(t, x) pneumatic_spring_dynamics(t, x, g, k, x_d), T, x0); 
+
+
+
+%% Implicit Euler, pneumatic spring:
+dt = 0.01;
+tf = 10;
+T = 0:dt:tf;
+x0 = [2;0];
+x_d = 1.32;
+k = 2.40;
+g = 9.81;
+m = 200;
+
+a = 1;
+b = 1;
+c = 1;
+butcherTableau = struct('A', a, 'b', b, 'c', c);
+
+
+x_ie = IRKTemplate(butcherTableau, @(t, x) pneumatic_spring_dynamics(t, x, g, k, x_d), @(t,x) pneumatic_spring_dfdx(t, x, g, k, x_d), T, x0);
+
+%% Implicit RK , midpoint
+
+dt = 0.01;
+tf = 10;
+T = 0:dt:tf;
+x0 = [2;0];
+x_d = 1.32;
+k = 2.40;
+g = 9.81;
+m = 200;
+
+a = 1/2;
+b = 1;
+c = 1/2;
+butcherTableau = struct('A', a, 'b', b, 'c', c);
+
+
+x_i_midpoint = IRKTemplate(butcherTableau, @(t, x) pneumatic_spring_dynamics(t, x, g, k, x_d), @(t,x) pneumatic_spring_dfdx(t, x, g, k, x_d), T, x0);
+
+E_midpoint = energy(x_i_midpoint);
+%% Energy actual 
+dt = 0.01;
+tf = 10;
+T = 0:dt:tf;
+x0 = [2;0];
+x_d = 1.32;
+k = 2.40;
+g = 9.81;
+m = 200;
+E = ((m*g)/(k-1)*x_d^k/x0(1)^(k-1)+m*g*x0(1)+1/2*m*x0(2))*10^-3;
+
+%% Plotting
+
+f_ee = figure();
+plot(T, x);
+hold on; 
+title('Explicit Euler pneumatic spring');
+f_ie = figure();
+plot(T, x_ie);
+hold on; 
+title('Implicit Euler pneumatic spring');
+f_i_midpoint = figure();
+plot(T, x_i_midpoint);
+hold on; 
+title('Implicit midpoint scheme');
+f_energy = figure();
+plot(T, E*ones(length(T)), 'black');
+hold on;
+plot(T, E_explicit_euler*ones(length(T)), 'black');
+plot(T, E_i*ones(length(T)), 'black');
+
+movegui(f_ee, 'northwest');
+movegui(f_ie, 'southwest');
+movegui(f_i_midpoint, 'south');
+%%
+
+syms x1 x2 t g k x_d;
+jac = jacobian(pneumatic_spring_dynamics(t, [x1;x2], g, k, x_d), [x1, x2]);
+simplify(jac)
