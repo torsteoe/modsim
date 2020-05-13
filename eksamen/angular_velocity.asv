@@ -1,0 +1,7 @@
+R =[0.61237 0.28033 0.73920;
+    0.35355 0.73920 -0.57322;
+    -0.70711 0.61237 0.35355];
+
+% page 246 book
+omega_a_ad = [-sin(psi*theta_dot)+cos(psi)*cos(theta*psi_dot);
+                cos(pis*theta_dot)+sin(psi)Æ
